@@ -63,5 +63,33 @@ class PartyTestsDatabase(unittest.TestCase):
         self.assertIn('jenga', result.data)
 
 
+class PartyTestsDatabaseNotRSVP(unittest.TestCase):
+    """Flask tests that use the database."""
+
+    def setUp(self):
+        """Stuff to do before every test."""
+
+        self.client = app.test_client()
+        app.config['TESTING'] = True
+
+        # Connect to test database (uncomment when testing database)
+        connect_to_db(app, "postgresql:///testdb")
+
+        # Create tables and add sample data (uncomment when testing database)
+        db.create_all()
+        example_data()
+
+    def tearDown(self):
+        """Do at end of every test."""
+
+        # (uncomment when testing database)
+        db.session.close()
+        db.drop_all()
+
+    def test_games(self):
+        result = self.client.get("/games", follow_redirects=True)
+        self.assertIn("board games, rainbows, and ice cream sundaes", result.data)
+        self.assertNotIn('jenga', result.data)
+
 if __name__ == "__main__":
     unittest.main()
