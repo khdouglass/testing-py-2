@@ -62,6 +62,13 @@ class PartyTestsDatabase(unittest.TestCase):
         result = self.client.get("/games")
         self.assertIn('jenga', result.data)
 
+    def test_add_game(self):
+        result = self.client.post("/games",
+                                  data={"game-name": "test",
+                                        "description": "testing testing"},
+                                  follow_redirects=True)
+        self.assertIn("testing testing", result.data)
+
 
 class PartyTestsDatabaseNotRSVP(unittest.TestCase):
     """Flask tests that use the database."""

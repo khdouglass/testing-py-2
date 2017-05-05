@@ -15,9 +15,25 @@
       <tr>
         <td>{{ game.name }}</td>
         <td>{{ game.description }}</td>
+        <td><button name="button">UPVOTE!!</button></td>
+        <td><div id="{{ game.name }}"></div></td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+
+  <form method="POST" action="/games">
+    <div class="form-group">
+      <label for="field-game-name">Game Name</label>
+      <input id="field-game-name" class="form-control" type="text" name="game-name" required>
+    </div>
+    <div class="form-group">
+      <label for="field-description">Description</label>
+      <textarea id="field-description" class="form-control" name="description" required></textarea>
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Oooh! I've got a great game!" class="btn btn-primary">
+    </div>
+  </form>
 
 {% endblock %}

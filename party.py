@@ -4,7 +4,9 @@
 from flask import Flask, session, render_template, request, flash, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 from model import Game, connect_to_db
+from flask.ext.sqlalchemy import SQLAlchemy
 
+db = SQLAlchemy()
 app = Flask(__name__)
 app.secret_key = "SECRETSECRETSECRET"
 
@@ -36,6 +38,19 @@ def games():
         return render_template("games.html", games=games)
     else:
         return redirect("/")
+
+@app.route("/games", methods=['POST'])
+def add_game():
+
+    game_name = request.form.get("game-name")
+    description = request.form.get("description")
+
+    new_game = Game(name=game_name, description=description)
+
+    db.session.add(new_game)
+    db.session.commit()
+
+    return redirect("/games")
 
 
 
